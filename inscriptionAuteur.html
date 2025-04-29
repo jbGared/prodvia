@@ -1,0 +1,511 @@
+import React, { useState } from 'react';
+
+export default function AuthorSignup() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phoneNumber: '',
+    address: '',
+    city: '',
+    postalCode: '',
+    country: 'France',
+    penName: '',
+    bio: '',
+    websiteUrl: '',
+    socialMedia: {
+      facebook: '',
+      twitter: '',
+      instagram: '',
+      linkedin: ''
+    },
+    genres: [],
+    termsAccepted: false
+  });
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+
+  const genreOptions = [
+    'Roman', 'Nouvelle', 'Poésie', 'Théâtre', 'Essai',
+    'Biographie', 'Histoire', 'Science-fiction', 'Fantasy', 
+    'Policier', 'Jeunesse', 'Autre'
+  ];
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value
+        }
+      }));
+    } else if (type === 'checkbox' && name === 'termsAccepted') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleGenreChange = (e) => {
+    const { value, checked } = e.target;
+    
+    if (checked) {
+      setFormData(prev => ({
+        ...prev,
+        genres: [...prev.genres, value]
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        genres: prev.genres.filter(genre => genre !== value)
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Validations de base
+    if (!formData.firstName) newErrors.firstName = "Le prénom est requis";
+    if (!formData.lastName) newErrors.lastName = "Le nom est requis";
+    
+    // Validation email
+    if (!formData.email) {
+      newErrors.email = "L'email est requis";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Format d'email invalide";
+    }
+    
+    // Validation mot de passe
+    if (!formData.password) {
+      newErrors.password = "Le mot de passe est requis";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Le mot de passe doit contenir au moins 8 caractères";
+    }
+    
+    // Confirmation mot de passe
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+    }
+    
+    // Validation téléphone (optionnel mais format correct si fourni)
+    if (formData.phoneNumber && !/^\+?[0-9]{10,15}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Format de numéro de téléphone invalide";
+    }
+    
+    // Code postal (si France)
+    if (formData.country === 'France' && formData.postalCode && !/^[0-9]{5}$/.test(formData.postalCode)) {
+      newErrors.postalCode = "Format de code postal français invalide";
+    }
+    
+    // Validation des conditions générales
+    if (!formData.termsAccepted) {
+      newErrors.termsAccepted = "Vous devez accepter les conditions générales";
+    }
+    
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setErrors({});
+    
+    // Simulation d'une API - en production, remplacer par un vrai appel API
+    setTimeout(() => {
+      console.log("Données soumises:", formData);
+      setIsSubmitting(false);
+      setSignupSuccess(true);
+    }, 1500);
+  };
+
+  if (signupSuccess) {
+    return (
+      <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-green-600 mb-4">Inscription réussie !</h2>
+          <p className="mb-4">Votre compte auteur a été créé avec succès.</p>
+          <p>Vous allez être redirigé vers la page de connexion...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">Inscription Auteur</h1>
+      
+      <div className="space-y-6">
+        {/* Section: Informations personnelles */}
+        <div className="bg-gray-50 p-4 rounded-md mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Informations personnelles</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Prénom <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nom <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Téléphone
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="+33 ou 06..."
+                className={`w-full px-3 py-2 border rounded-md ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
+              )}
+            </div>
+          </div>
+          
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Adresse
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ville
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Code postal
+              </label>
+              <input
+                type="text"
+                name="postalCode"
+                value={formData.postalCode}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.postalCode ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.postalCode && (
+                <p className="text-red-500 text-xs mt-1">{errors.postalCode}</p>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Pays
+              </label>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              >
+                <option value="France">France</option>
+                <option value="Belgique">Belgique</option>
+                <option value="Suisse">Suisse</option>
+                <option value="Canada">Canada</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        {/* Section: Informations de compte */}
+        <div className="bg-gray-50 p-4 rounded-md mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Informations de compte</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mot de passe <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
+              <p className="text-xs text-gray-500 mt-1">
+                Minimum 8 caractères, incluant lettres et chiffres
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirmer le mot de passe <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`w-full px-3 py-2 border rounded-md ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* Section: Profil d'auteur */}
+        <div className="bg-gray-50 p-4 rounded-md mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Profil d'auteur</h2>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nom de plume (si différent)
+            </label>
+            <input
+              type="text"
+              name="penName"
+              value={formData.penName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Biographie
+            </label>
+            <textarea
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              rows="4"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              placeholder="Parlez-nous de vous en tant qu'auteur..."
+            ></textarea>
+          </div>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Genres littéraires
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {genreOptions.map((genre) => (
+                <div key={genre} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`genre-${genre}`}
+                    value={genre}
+                    checked={formData.genres.includes(genre)}
+                    onChange={handleGenreChange}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor={`genre-${genre}`} className="ml-2 text-sm text-gray-700">
+                    {genre}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Site web personnel
+              </label>
+              <input
+                type="url"
+                name="websiteUrl"
+                value={formData.websiteUrl}
+                onChange={handleChange}
+                placeholder="https://..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+          
+          <h3 className="text-lg font-medium text-gray-700 mt-4 mb-2">Réseaux sociaux</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Facebook
+              </label>
+              <input
+                type="text"
+                name="socialMedia.facebook"
+                value={formData.socialMedia.facebook}
+                onChange={handleChange}
+                placeholder="URL ou nom d'utilisateur"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Twitter
+              </label>
+              <input
+                type="text"
+                name="socialMedia.twitter"
+                value={formData.socialMedia.twitter}
+                onChange={handleChange}
+                placeholder="URL ou nom d'utilisateur"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Instagram
+              </label>
+              <input
+                type="text"
+                name="socialMedia.instagram"
+                value={formData.socialMedia.instagram}
+                onChange={handleChange}
+                placeholder="URL ou nom d'utilisateur"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                LinkedIn
+              </label>
+              <input
+                type="text"
+                name="socialMedia.linkedin"
+                value={formData.socialMedia.linkedin}
+                onChange={handleChange}
+                placeholder="URL ou nom d'utilisateur"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* Section: Conditions générales */}
+        <div className="mb-6">
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                id="termsAccepted"
+                name="termsAccepted"
+                type="checkbox"
+                checked={formData.termsAccepted}
+                onChange={handleChange}
+                className={`h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ${errors.termsAccepted ? 'border-red-500' : ''}`}
+              />
+            </div>
+            <div className="ml-3 text-sm">
+              <label htmlFor="termsAccepted" className="font-medium text-gray-700">
+                J'accepte les <a href="#" className="text-blue-600 hover:underline">conditions générales</a> et la <a href="#" className="text-blue-600 hover:underline">politique de confidentialité</a> <span className="text-red-500">*</span>
+              </label>
+              {errors.termsAccepted && (
+                <p className="text-red-500 text-xs mt-1">{errors.termsAccepted}</p>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {/* Bouton de soumission */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className={`px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+              isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
+          >
+            {isSubmitting ? 'Inscription en cours...' : 'Créer mon compte auteur'}
+          </button>
+        </div>
+        
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">
+            Vous avez déjà un compte ? <a href="#" className="text-blue-600 hover:underline">Connectez-vous</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
