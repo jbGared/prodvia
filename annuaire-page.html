@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodvia - Annuaire des auteurs de traduction</title>
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-dark: #0058b9;
+            --primary-light: #e8f2ff;
+            --primary-ultra-light: #f5f9ff;
+            --secondary: #f56300;
+            --secondary-dark: #d85600;
+            --text-primary: #1d1d1f;
+            --text-secondary: #515154;
+            --text-tertiary: #86868b;
+            --background: #ffffff;
+            --background-alt: #f5f5f7;
+            --divider: #d2d2d7;
+            --error: #ff3b30;
+            --success: #34c759;
+            --input-border: #c5c5c7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            color: var(--text-primary);
+            background-color: var(--background-alt);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .btn {
+            padding: 8px 18px;
+            border-radius: 980px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--divider);
+            color: var(--primary);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 113, 227, 0.05);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--text-primary);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--background);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .mobile-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .mobile-menu a:hover {
+            color: var(--primary);
+        }
+        
+        .mobile-auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* Scroll To Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .scroll-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        /* Directory Page Specific Styles */
+        .directory-hero {
+            padding: 140px 0 60px;
+            background-color: var(--background);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .directory-hero::before {
+            content: '';
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 50% 0%, #f2f2f7 0%, rgba(255, 255, 255, 0) 70%);
+            top: -20%;
+            left: -20%;
+            z-index: 0;
+        }
+        
+        .directory-header {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .directory-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.015em;
+            color: var(--text-primary);
+        }
+        
+        .directory-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            letter-spacing: -0.01em;
+            line-height: 1.47;
+        }
+        
+        .search-container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border: 1px solid var(--divider);
+            border-radius: 980px;
+            font-size: 16px;
+            color: var(--text-primary);
+            background-color: var(--background);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+        
+        .search-button {
+            padding: 14px 20px;
+            border-radius: 980px;
+            border: none;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .filters-bar {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--divider);
+            background-color: var(--background);
+            position: sticky;
+            top: 60px;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filters-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filters-left {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-dropdown {
+            position: relative;
+        }
+        
+        .filter-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--divider);
+            border-radius: 980px;
+            background-color: var(--background);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-button svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+        
+        .filter-dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            min-width: 200px;
+            background-color: var(--background);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            z-index: 10;
+            display: none;
+        }
+        
+        .filter-dropdown.active .filter-dropdown-content {
+            display: block;
+            animation: fadeIn 0.2s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .filter-option:hover {
+            background-color: var(--primary-ultra-light);
+        }
+        
+        .filter-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid var(--divider);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .filter-option input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .filter-option input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .filter-option label {
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .filters-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sort-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid var(--divider);
+            border-radius: 980px;
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .view-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--divider);
+            background-color: var(--background);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .view-button:hover, .view-button.active {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .view-button svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .directory-content {
+            padding: 40px 0 80px;
+        }
+        
+        .directory-results {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .profiles-list {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .profile-card {
+            background-color: var(--background);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-cover {
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--background);
+            overflow: hidden;
+            position: absolute;
+            bottom: -40px;
+            left: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-content {
+            padding: 48px 24px 24px;
+        }
+        
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .profile-title {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .profile-tag {
+            padding: 4px 10px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-radius: 980px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .profile-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+        
+        .stat-item svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .profile-view-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .profile-view-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        /* List View Styles */
+        .profile-card-list {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .profile-card-list .profile-avatar {
+            position: static;
+            width: 60px;
+            height: 60px;
+            margin-right: 16px;
+            border: 2px solid var(--background);
+            flex-shrink: 0;
+        }
+        
+        .profile-card-list .profile-content {
+            padding: 0;
+            flex-grow: 1;
+        }
+        
+        .profile-card-list .profile-name {
+            margin-bottom: 2px;
+        }
+        
+        .profile-card-list .profile-bio {
+            -webkit-line-clamp: 2;
+            margin-bottom: 10px;
+        }
+        
+        .profile-card-list .profile-footer {
+            align-items: flex-end;
+        }
+        
+        .profile-info-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+        
+        .profile-info {
+            flex-grow: 1;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 8px;
+        }
+        
+        .page-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--divider);
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-item:hover, .page-item.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-prev, .page-next {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--divider);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-prev:hover, .page-next:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .page-prev svg, .page-next svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        /* No Results */
+        .no-results {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: var(--background);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .no-results svg {
+            width: 80px;
+            height: 80px;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+        
+        .no-results h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .no-results p {
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+        
+        /* Footer Styles (simplified) */
+        footer {
+            background-color: var(--background);
+            padding: 40px 0;
+            border-top: 1px solid var(--divider);
+        }
+        
+        .footer-content {
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .profiles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .nav-links, .auth-buttons {
+                display: none;
+            }
+            
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filters-left, .filters-right {
+                justify-content: space-between;
+            }
+            
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-card-list {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .profile-card-list .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+            
+            .profile-info-wrapper {
+                flex-direction: column;
+            }
+            
+            .profile-card-list .profile-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .directory-header h1 {
+                font-size: 28px;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .search-input, .search-button {
+                width: 100%;
+            }
+            
+            .filter-button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .sort-label {
+                display: none;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Prod<span>via</span></a>
+                <nav class="nav-links">
+                    <a href="index.html#features">Fonctionnalités</a>
+                    <a href="index.html#pricing">Tarifs</a>
+                    <a href="annuaire.html" class="active">Annuaire</a>
+                    <a href="index.html#testimonials">Témoignages</a>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-outline">Connexion</a>
+                    <a href="signup.html" class="btn btn-primary">Essai gratuit</a>
+                </div>
+                <button class="menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="index.html#features">Fonctionnalités</a>
+        <a href="index.html#pricing">Tarifs</a>
+        <a href="annuaire.html">Annuaire</a>
+        <a href="index.html#testimonials">Témoignages</a>
+        <div class="mobile-auth-buttons">
+            <a href="login.html" class="btn btn-outline">Connexion</a>
+            <a href="signup.html" class="btn btn-primary">Essai gratuit</a>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
+        </svg>
+    </div>
+
+    <!-- Directory Hero Section -->
+    <section class="directory-hero">
+        <div class="container">
+            <div class="directory-header">
+                <h1>Annuaire des auteurs de traduction</h1>
+                <p>Découvrez et contactez des talents qualifiés pour vos projets de traduction audiovisuelle</p>
+            </div>
+            <div class="search-container">
+                <form class="search-form">
+                    <input type="text" class="search-input" placeholder="Rechercher par nom, spécialité, oeuvre...">
+                    <button type="submit" class="search-button">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Bar -->
+    <section class="filters-bar">
+        <div class="container">
+            <div class="filters-container">
+                <div class="filters-left">
+                    <div class="filter-dropdown">
+                        <button class="filter-button">
+                            Spécialités
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5H7z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="filter-option">
+                                <input type="checkbox" id="speciality-sous-titrage">
+                                <label for="speciality-sous-titrage">Sous-titrage</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="speciality-doublage">
+                                <label for="speciality-doublage">Doublage</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="speciality-adaptation">
+                                <label for="speciality-adaptation">Adaptation</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="speciality-voice-over">
+                                <label for="speciality-voice-over">Voice-over</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="speciality-audiodescription">
+                                <label for="speciality-audiodescription">Audiodescription</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-dropdown">
+                        <button class="filter-button">
+                            Langues
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5H7z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-english">
+                                <label for="lang-english">Anglais</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-spanish">
+                                <label for="lang-spanish">Espagnol</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-german">
+                                <label for="lang-german">Allemand</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-italian">
+                                <label for="lang-italian">Italien</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-japanese">
+                                <label for="lang-japanese">Japonais</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="lang-other">
+                                <label for="lang-other">Autres langues</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-dropdown">
+                        <button class="filter-button">
+                            Genre
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5H7z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="filter-option">
+                                <input type="checkbox" id="genre-fiction">
+                                <label for="genre-fiction">Fiction</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="genre-documentary">
+                                <label for="genre-documentary">Documentaire</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="genre-animation">
+                                <label for="genre-animation">Animation</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="genre-entertainment">
+                                <label for="genre-entertainment">Divertissement</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="genre-corporate">
+                                <label for="genre-corporate">Corporate</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-dropdown">
+                        <button class="filter-button">
+                            Expérience
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M7 10l5 5 5-5H7z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="filter-option">
+                                <input type="checkbox" id="exp-junior">
+                                <label for="exp-junior">Moins de 2 ans</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="exp-mid">
+                                <label for="exp-mid">2 à 5 ans</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="exp-senior">
+                                <label for="exp-senior">5 à 10 ans</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="exp-expert">
+                                <label for="exp-expert">Plus de 10 ans</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters-right">
+                    <div class="sort-options">
+                        <span class="sort-label">Trier par :</span>
+                        <select class="sort-select">
+                            <option value="relevance">Pertinence</option>
+                            <option value="experience">Expérience</option>
+                            <option value="recent">Plus récent</option>
+                            <option value="alphabetical">Ordre alphabétique</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-button grid-view active" title="Vue en grille">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M3 3v8h8V3H3zm10 0v8h8V3h-8zM3 13v8h8v-8H3zm10 0v8h8v-8h-8z"/>
+                            </svg>
+                        </button>
+                        <button class="view-button list-view" title="Vue en liste">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Directory Content -->
+    <section class="directory-content">
+        <div class="container">
+            <div class="directory-results">45 auteurs trouvés</div>
+            
+            <!-- Grid View (Default) -->
+            <div class="profiles-grid">
+                <!-- Profile Card 1 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Sophie Mercier">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Sophie Mercier</h3>
+                        <div class="profile-title">Traductrice-adaptatrice</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Sous-titrage</span>
+                            <span class="profile-tag">Adaptation</span>
+                            <span class="profile-tag">EN → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Traductrice-adaptatrice spécialisée dans les séries TV et documentaires. 
+                            Plus de 8 ans d'expérience avec les principales plateformes de streaming.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    80€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    45 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card 2 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Thomas Leroy">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Thomas Leroy</h3>
+                        <div class="profile-title">Adaptateur dialoguiste</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Doublage</span>
+                            <span class="profile-tag">Adaptation</span>
+                            <span class="profile-tag">EN → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Adaptateur dialoguiste pour le cinéma et la télévision depuis 2012. 
+                            Spécialisé dans les comédies et films d'animation.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    90€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    78 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card 3 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Julie Dubois">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Julie Dubois</h3>
+                        <div class="profile-title">Sous-titreuse</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Sous-titrage</span>
+                            <span class="profile-tag">EN → FR</span>
+                            <span class="profile-tag">ES → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Spécialiste du sous-titrage multilingue avec une expertise dans le domaine 
+                            technique et scientifique. Diplômée en traduction audiovisuelle.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    75€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    32 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card 4 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Marc Dufresne">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Marc Dufresne</h3>
+                        <div class="profile-title">Sous-titreur Audiodescripteur</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Sous-titrage</span>
+                            <span class="profile-tag">Audiodescription</span>
+                            <span class="profile-tag">EN → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Auteur de sous-titres et d'audiodescription pour le cinéma et la télévision. 
+                            Spécialisé dans l'accessibilité des contenus audiovisuels.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    85€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    64 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card 5 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Claire Martin">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Claire Martin</h3>
+                        <div class="profile-title">Traductrice Voice-over</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Voice-over</span>
+                            <span class="profile-tag">Adaptation</span>
+                            <span class="profile-tag">DE → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Traductrice spécialisée dans le voice-over pour documentaires et programmes 
+                            éducatifs. Expérience notable dans les contenus germanophones.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    95€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    38 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card 6 -->
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <img src="/api/placeholder/400/100" alt="Cover image">
+                        <div class="profile-avatar">
+                            <img src="/api/placeholder/80/80" alt="Antoine Bertrand">
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-name">Antoine Bertrand</h3>
+                        <div class="profile-title">Adaptateur Doublage</div>
+                        <div class="profile-tags">
+                            <span class="profile-tag">Doublage</span>
+                            <span class="profile-tag">Adaptation</span>
+                            <span class="profile-tag">EN → FR</span>
+                        </div>
+                        <p class="profile-bio">
+                            Adaptateur pour le doublage de séries et films. Passionné par la science-fiction
+                            et les thrillers. Collaboration régulière avec les grands studios.
+                        </p>
+                        <div class="profile-footer">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                    </svg>
+                                    100€/h
+                                </div>
+                                <div class="stat-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                    </svg>
+                                    52 projets
+                                </div>
+                            </div>
+                            <a href="#" class="profile-view-link">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- List View (Hidden by default) -->
+            <div class="profiles-list" style="display: none;">
+                <!-- Profile Card List 1 -->
+                <div class="profile-card profile-card-list">
+                    <div class="profile-avatar">
+                        <img src="/api/placeholder/60/60" alt="Sophie Mercier">
+                    </div>
+                    <div class="profile-info-wrapper">
+                        <div class="profile-info">
+                            <h3 class="profile-name">Sophie Mercier</h3>
+                            <div class="profile-title">Traductrice-adaptatrice</div>
+                            <div class="profile-tags">
+                                <span class="profile-tag">Sous-titrage</span>
+                                <span class="profile-tag">Adaptation</span>
+                                <span class="profile-tag">EN → FR</span>
+                            </div>
+                            <p class="profile-bio">
+                                Traductrice-adaptatrice spécialisée dans les séries TV et documentaires. 
+                                Plus de 8 ans d'expérience avec les principales plateformes de streaming.
+                            </p>
+                            <div class="profile-footer">
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                        </svg>
+                                        80€/h
+                                    </div>
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                        </svg>
+                                        45 projets
+                                    </div>
+                                </div>
+                                <a href="#" class="profile-view-link">Voir le profil</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card List 2 -->
+                <div class="profile-card profile-card-list">
+                    <div class="profile-avatar">
+                        <img src="/api/placeholder/60/60" alt="Thomas Leroy">
+                    </div>
+                    <div class="profile-info-wrapper">
+                        <div class="profile-info">
+                            <h3 class="profile-name">Thomas Leroy</h3>
+                            <div class="profile-title">Adaptateur dialoguiste</div>
+                            <div class="profile-tags">
+                                <span class="profile-tag">Doublage</span>
+                                <span class="profile-tag">Adaptation</span>
+                                <span class="profile-tag">EN → FR</span>
+                            </div>
+                            <p class="profile-bio">
+                                Adaptateur dialoguiste pour le cinéma et la télévision depuis 2012. 
+                                Spécialisé dans les comédies et films d'animation.
+                            </p>
+                            <div class="profile-footer">
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                        </svg>
+                                        90€/h
+                                    </div>
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                        </svg>
+                                        78 projets
+                                    </div>
+                                </div>
+                                <a href="#" class="profile-view-link">Voir le profil</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Card List 3 -->
+                <div class="profile-card profile-card-list">
+                    <div class="profile-avatar">
+                        <img src="/api/placeholder/60/60" alt="Julie Dubois">
+                    </div>
+                    <div class="profile-info-wrapper">
+                        <div class="profile-info">
+                            <h3 class="profile-name">Julie Dubois</h3>
+                            <div class="profile-title">Sous-titreuse</div>
+                            <div class="profile-tags">
+                                <span class="profile-tag">Sous-titrage</span>
+                                <span class="profile-tag">EN → FR</span>
+                                <span class="profile-tag">ES → FR</span>
+                            </div>
+                            <p class="profile-bio">
+                                Spécialiste du sous-titrage multilingue avec une expertise dans le domaine 
+                                technique et scientifique. Diplômée en traduction audiovisuelle.
+                            </p>
+                            <div class="profile-footer">
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/>
+                                        </svg>
+                                        75€/h
+                                    </div>
+                                    <div class="stat-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"/>
+                                        </svg>
+                                        32 projets
+                                    </div>
+                                </div>
+                                <a href="#" class="profile-view-link">Voir le profil</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plus de profils pour la vue liste... -->
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </a>
+                <a href="#" class="page-item active">1</a>
+                <a href="#" class="page-item">2</a>
+                <a href="#" class="page-item">3</a>
+                <a href="#" class="page-item">4</a>
+                <a href="#" class="page-item">5</a>
+                <a href="#" class="page-next">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- No Results (Hidden) -->
+            <div class="no-results" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <h3>Aucun résultat trouvé</h3>
+                <p>Essayez de modifier vos critères de recherche ou d'élargir les filtres pour trouver des auteurs correspondants.</p>
+                <a href="#" class="btn btn-primary">Réinitialiser les filtres</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">Accueil</a>
+                <a href="index.html#features">Fonctionnalités</a>
+                <a href="index.html#pricing">Tarifs</a>
+                <a href="legal.html">Mentions légales</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-content">
+                <p>© 2025 Prodvia. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu burger toggle functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const menuLinks = document.querySelectorAll('.mobile-menu a');
+        
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        // Close mobile menu when a link is clicked
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Scroll to top functionality
+        const scrollToTopBtn = document.querySelector('.scroll-to-top');
+        
+        function checkScrollPosition() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        }
+        
+        window.addEventListener('scroll', checkScrollPosition);
+        
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Check scroll position on page load
+        checkScrollPosition();
+        
+        // Filter dropdown functionality
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const dropdown = this.closest('.filter-dropdown');
+                
+                // Close all other dropdowns
+                filterDropdowns.forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current dropdown
+                dropdown.classList.toggle('active');
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.filter-dropdown')) {
+                filterDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+        
+        // View toggle functionality
+        const gridViewBtn = document.querySelector('.grid-view');
+        const listViewBtn = document.querySelector('.list-view');
+        const profilesGrid = document.querySelector('.profiles-grid');
+        const profilesList = document.querySelector('.profiles-list');
+        
+        gridViewBtn.addEventListener('click', function() {
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            profilesGrid.style.display = 'grid';
+            profilesList.style.display = 'none';
+        });
+        
+        listViewBtn.addEventListener('click', function() {
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            profilesList.style.display = 'flex';
+            profilesGrid.style.display = 'none';
+        });
+        
+        // Pagination functionality
+        const pageItems = document.querySelectorAll('.page-item');
+        
+        pageItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all page items
+                pageItems.forEach(pi => pi.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // In a real application, this would load new content
+                // For this demo, we'll just scroll to top
+                window.scrollTo({
+                    top: document.querySelector('.directory-content').offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Search form submission
+        const searchForm = document.querySelector('.search-form');
+        
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchInput = this.querySelector('.search-input');
+            console.log('Recherche pour:', searchInput.value);
+            
+            // In a real application, this would trigger a search
+            // For this demo, we'll just focus back on the results
+            window.scrollTo({
+                top: document.querySelector('.directory-content').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
