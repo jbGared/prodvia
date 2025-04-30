@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodvia - La plateforme des auteurs de traduction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Prod<span>via</span></div>
+                <nav class="nav-links">
+                    <a href="#features">Fonctionnalités</a>
+                    <a href="#pricing">Tarifs</a>
+                    <a href="#audience">Pour qui ?</a>
+                    <a href="#testimonials">Témoignages</a>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-outline">Connexion</a>
+                    <a href="signup.html" class="btn btn-primary">Essai gratuit</a>
+                </div>
+                <button class="menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu - MODIFIED -->
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu">
+        <button class="mobile-menu-close" aria-label="Fermer le menu"></button>
+        <a href="#features">Fonctionnalités</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="#audience">Pour qui ?</a>
+        <a href="#testimonials">Témoignages</a>
+        <div class="mobile-auth-buttons">
+            <a href="login.html" class="btn btn-outline">Connexion</a>
+            <a href="signup.html" class="btn btn-primary">Essai gratuit</a>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
+        </svg>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-tagline">Plateforme pour auteurs de traduction</div>
+                    <h1>Gérez vos missions et valorisez votre carrière</h1>
+                    <p>Prodvia connecte les auteurs de traduction avec les sociétés de production pour une collaboration fluide et transparente. Développez votre visibilité professionnelle et simplifiez votre gestion administrative.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary">Je suis auteur</a>
+                        <a href="#" class="btn btn-outline">Je suis une société de production</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="images/hero-workspace.jpg" alt="Espace de travail d'un traducteur">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Une suite d'outils conçue pour vous</h2>
+                <p>Des fonctionnalités pensées pour répondre aux besoins spécifiques des auteurs de traduction.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Gestion de missions</h3>
+                    <p>Suivez facilement toutes vos missions, leur statut et vos rémunérations associées dans une interface claire et intuitive.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Profil professionnel</h3>
+                    <p>Créez un profil public attrayant pour mettre en valeur vos compétences et votre portfolio d'œuvres traduites.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>API IMDb intégrée</h3>
+                    <p>Recherchez et ajoutez facilement les œuvres sur lesquelles vous avez travaillé grâce à notre intégration avec IMDb.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Suivi financier</h3>
+                    <p>Visualisez votre solde et vos paiements à venir dans un dashboard simple qui vous aide à gérer vos revenus.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Notifications intelligentes</h3>
+                    <p>Recevez des alertes pertinentes sur le statut de vos missions, les paiements et les opportunités.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Mise à jour automatique</h3>
+                    <p>Les statuts de vos missions se mettent à jour automatiquement grâce à nos workflows d'automatisation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlighted Features Section -->
+    <section class="highlighted-features">
+        <div class="container highlighted-features-container">
+            <div class="highlighted-feature">
+                <div class="highlighted-feature-content">
+                    <h2 class="highlighted-feature-title">Déclarations SACEM et SCAM automatisées</h2>
+                    <p class="highlighted-feature-description">Gagnez un temps précieux sur vos démarches administratives grâce à notre système de génération automatique des formulaires de déclaration.</p>
+                    <ul class="highlighted-feature-points">
+                        <li>Formulaires pré-remplis avec vos informations</li>
+                        <li>Intégration de vos œuvres depuis votre profil</li>
+                        <li>Historique des déclarations précédentes</li>
+                        <li>Rappels pour les dates limites importantes</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                </div>
+                <div class="highlighted-feature-image">
+                    <img src="images/declaration-form.jpg" alt="Déclaration SACEM automatisée">
+                </div>
+            </div>
+            
+            <div class="highlighted-feature">
+                <div class="highlighted-feature-content">
+                    <h2 class="highlighted-feature-title">Signature électronique et documents automatisés</h2>
+                    <p class="highlighted-feature-description">Créez, envoyez et signez vos documents professionnels directement depuis la plateforme pour une gestion administrative sans papier.</p>
+                    <ul class="highlighted-feature-points">
+                        <li>Génération de NDA et attestations d'auteur</li>
+                        <li>Signature électronique sécurisée</li>
+                        <li>Archivage automatique des documents</li>
+                        <li>Envoi facile aux sociétés de production</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                </div>
+                <div class="highlighted-feature-image">
+                    <img src="images/digital-signature.jpg" alt="Signature électronique de documents">
+                </div>
+            </div>
+            
+            <div class="highlighted-feature">
+                <div class="highlighted-feature-content">
+                    <h2 class="highlighted-feature-title">Intégration calendrier et email</h2>
+                    <p class="highlighted-feature-description">Connectez vos outils Google ou Microsoft pour une gestion centralisée de toutes vos échéances et communications professionnelles.</p>
+                    <ul class="highlighted-feature-points">
+                        <li>Synchronisation avec Google Calendar ou Outlook</li>
+                        <li>Rappels automatiques pour les dates clés</li>
+                        <li>Envoi de documents et relances depuis votre compte email</li>
+                        <li>Gestion unifiée de tous vos rendez-vous professionnels</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                </div>
+                <div class="highlighted-feature-image">
+                    <img src="images/calendar-integration.jpg" alt="Intégration calendrier et email">
+                </div>
+            </div>
+            
+            <div class="highlighted-feature">
+                <div class="highlighted-feature-content">
+                    <h2 class="highlighted-feature-title">Diagrammes de Gantt et gestion de projet</h2>
+                    <p class="highlighted-feature-description">Visualisez l'avancement de vos projets grâce à des diagrammes de Gantt interactifs générés automatiquement avec Google API.</p>
+                    <ul class="highlighted-feature-points">
+                        <li>Vue d'ensemble de tous vos projets en cours</li>
+                        <li>Planification visuelle des échéances</li>
+                        <li>Suivi en temps réel de l'avancement</li>
+                        <li>Partage facile avec les sociétés de production</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">En savoir plus</a>
+                </div>
+                <div class="highlighted-feature-image">
+                    <img src="images/gantt-diagram.jpg" alt="Diagramme de Gantt pour gestion de projet">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Des formules adaptées à vos besoins</h2>
+                <p>Choisissez le plan qui correspond le mieux à votre activité d'auteur de traduction.</p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span class="pricing-toggle-label active">Mensuel</span>
+                <div class="pricing-toggle-switch"></div>
+                <span class="pricing-toggle-label">Annuel <span class="pricing-toggle-save">(2 mois offerts)</span></span>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Prodvia Essentiel</h3>
+                        <p class="pricing-subtitle">Pour démarrer et gagner en visibilité</p>
+                        <div class="pricing-price free">Gratuit</div>
+                        <p class="pricing-period">Pour toujours</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul class="pricing-features-list">
+                            <li>Création de profil professionnel</li>
+                            <li>Importation depuis LinkedIn ou CV PDF</li>
+                            <li>Publication dans l'annuaire des auteurs</li>
+                            <li>Visibilité auprès des sociétés</li>
+                            <li class="disabled">Gestion de projets</li>
+                            <li class="disabled">Signature électronique</li>
+                            <li class="disabled">Intégration calendrier</li>
+                            <li class="disabled">Déclarations automatisées</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-outline pricing-cta">Commencer gratuitement</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-tag">Populaire</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Prodvia Pro</h3>
+                        <p class="pricing-subtitle">Pour les auteurs réguliers</p>
+                        <div class="pricing-price">49€</div>
+                        <p class="pricing-period">par mois</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul class="pricing-features-list">
+                            <li>Tout ce qu'inclut Essentiel</li>
+                            <li>Gestion et suivi de projets</li>
+                            <li>Génération de documents professionnels</li>
+                            <li>Intégration Google Calendar/Outlook</li>
+                            <li>Suivi financier et exports</li>
+                            <li>Interface de signature électronique</li>
+                            <li class="disabled">Déclarations SACEM/SCAM automatisées</li>
+                            <li class="disabled">Diagrammes de Gantt</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary pricing-cta">Essayer gratuitement</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Prodvia Excellence</h3>
+                        <p class="pricing-subtitle">Pour les professionnels exigeants</p>
+                        <div class="pricing-price">79€</div>
+                        <p class="pricing-period">par mois</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul class="pricing-features-list">
+                            <li>Tout ce qu'inclut Pro</li>
+                            <li>Déclarations SACEM/SCAM automatisées</li>
+                            <li>Intégration complète des emails</li>
+                            <li>Diagrammes de Gantt pour projets</li>
+                            <li>Workflows automatisés</li>
+                            <li>Support prioritaire</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-outline pricing-cta">Essayer gratuitement</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section id="audience" class="audience">
+        <div class="container">
+            <div class="section-header">
+                <h2>Conçu pour les professionnels de la traduction</h2>
+                <p>Prodvia s'adresse à deux publics complémentaires dans l'écosystème de la traduction audiovisuelle.</p>
+            </div>
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <div class="audience-image">
+                        <img src="images/translator-working.jpg" alt="Auteur de traduction au travail">
+                    </div>
+                    <div class="audience-content">
+                        <h3>Auteurs de traduction</h3>
+                        <p>Une solution complète pour les traducteurs, adaptateurs et sous-titreurs.</p>
+                        <ul class="audience-list">
+                            <li>Organisation efficace de vos missions et travaux</li>
+                            <li>Création d'un portfolio professionnel attractif</li>
+                            <li>Suivi financier transparent de vos revenus</li>
+                            <li>Mise en relation avec des sociétés de production</li>
+                            <li>Documentation automatique de votre expérience</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Créer mon profil</a>
+                    </div>
+                </div>
+                <div class="audience-card">
+                    <div class="audience-image">
+                        <img src="images/production-studio.jpg" alt="Société de production audiovisuelle">
+                    </div>
+                    <div class="audience-content">
+                        <h3>Sociétés de production</h3>
+                        <p>Un accès direct à un réseau qualifié d'auteurs de traduction.</p>
+                        <ul class="audience-list">
+                            <li>Recherche ciblée d'auteurs par spécialité</li>
+                            <li>Consultation de portfolios vérifiés</li>
+                            <li>Contact direct et sécurisé avec les auteurs</li>
+                            <li>Suivi des collaborations en cours</li>
+                            <li>Centralisation de vos relations professionnelles</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Créer un compte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container testimonials-container">
+            <div class="section-header">
+                <h2>Ce qu'en disent nos utilisateurs</h2>
+                <p>Découvrez les expériences de ceux qui utilisent déjà Prodvia au quotidien.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Prodvia a transformé ma façon de gérer mes missions. L'interface est si intuitive que je peux me concentrer sur mon travail créatif plutôt que sur l'administratif. Un vrai gain de temps et de sérénité !"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="images/testimonial-sophie.jpg" alt="Portrait de Sophie Mercier">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sophie Mercier</h4>
+                            <p>Traductrice-adaptatrice</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "En tant qu'adaptateur, j'apprécie particulièrement la fonction de recherche IMDb qui me permet d'ajouter facilement les œuvres à mon portfolio. Mon profil est devenu ma meilleure carte de visite auprès des sociétés de production."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="images/testimonial-thomas.jpg" alt="Portrait de Thomas Leroy">
+                        </div>
+                        <div class="author-info">
+                            <h4>Thomas Leroy</h4>
+                            <p>Adaptateur dialoguiste</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Notre studio travaille avec plusieurs dizaines d'auteurs et Prodvia a considérablement simplifié notre processus de recrutement. Nous pouvons maintenant trouver le bon traducteur pour chaque projet en quelques clics."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="images/testimonial-anne.jpg" alt="Portrait d'Anne Dubois">
+                        </div>
+                        <div class="author-info">
+                            <h4>Anne Dubois</h4>
+                            <p>Directrice de production</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Le suivi financier est une révélation ! Je peux enfin visualiser mes revenus à venir et planifier mes finances plus sereinement. La transparence que Prodvia apporte dans ma gestion est inestimable."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-image">
+                            <img src="images/testimonial-marc.jpg" alt="Portrait de Marc Dufresne">
+                        </div>
+                        <div class="author-info">
+                            <h4>Marc Dufresne</h4>
+                            <p>Sous-titreur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container cta-container">
+            <h2>Prêt à transformer votre expérience professionnelle ?</h2>
+            <p>Rejoignez dès maintenant la communauté Prodvia et donnez un nouvel élan à votre carrière dans la traduction audiovisuelle.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Commencer gratuitement</a>
+                <a href="#" class="btn btn-outline">Demander une démo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">Prod<span>via</span></div>
+                    <p>Prodvia est la première plateforme dédiée aux auteurs de traduction et aux sociétés de production, facilitant la gestion des missions et la valorisation des compétences.</p>
+                    <a href="#" class="btn-text">En savoir plus →</a>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Prodvia</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#features">Fonctionnalités</a></li>
+                        <li><a href="#pricing">Tarifs</a></li>
+                        <li><a href="#audience">Pour qui</a></li>
+                        <li><a href="#testimonials">Témoignages</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Ressources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Guide d'utilisation</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h3 class="footer-heading">Légal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="legal.html">Mentions légales</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Prodvia. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu burger toggle functionality
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const menuLinks = document.querySelectorAll('.mobile-menu a');
+        
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        // Close mobile menu when a link is clicked
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Close mobile menu when close button is clicked
+        mobileMenuClose.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Close mobile menu when clicking on overlay
+        mobileMenuOverlay.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Scroll to top functionality
+        const scrollToTopBtn = document.querySelector('.scroll-to-top');
+        
+        // Function to check scroll position
+        function checkScrollPosition() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        }
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', checkScrollPosition);
+        
+        // Scroll to top when button is clicked
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Check scroll position on page load
+        checkScrollPosition();
+        
+        // Pricing toggle functionality
+        const pricingToggle = document.querySelector('.pricing-toggle-switch');
+        const pricingLabels = document.querySelectorAll('.pricing-toggle-label');
+        const pricingPrices = document.querySelectorAll('.pricing-price:not(.free)');
+        
+        // Pricing data
+        const monthlyPrices = ['49€', '79€'];
+        const annualPrices = ['490€', '790€'];
+        
+        pricingToggle.addEventListener('click', function() {
+            this.classList.toggle('annual');
+            
+            // Toggle active class on labels
+            pricingLabels.forEach(label => {
+                label.classList.toggle('active');
+            });
+            
+            // Toggle prices based on plan
+            const isAnnual = this.classList.contains('annual');
+            
+            pricingPrices.forEach((price, index) => {
+                price.textContent = isAnnual ? annualPrices[index] : monthlyPrices[index];
+            });
+            
+            // Update only the paid pricing periods (excluding the free plan)
+            // Use a more specific selector to target only the periods for paid plans
+            const proFormulaPeriod = document.querySelector('.pricing-card:nth-child(2) .pricing-period');
+            const excellenceFormulaPeriod = document.querySelector('.pricing-card:nth-child(3) .pricing-period');
+            
+            if (proFormulaPeriod) proFormulaPeriod.textContent = isAnnual ? 'par an' : 'par mois';
+            if (excellenceFormulaPeriod) excellenceFormulaPeriod.textContent = isAnnual ? 'par an' : 'par mois';
+        });
+    </script>
+</body>
+</html>
