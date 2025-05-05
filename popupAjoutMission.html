@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodvia - Nouvelle mission</title>
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-dark: #0058b9;
+            --primary-light: #e8f2ff;
+            --primary-ultra-light: #f5f9ff;
+            --secondary: #f56300;
+            --secondary-dark: #d85600;
+            --text-primary: #1d1d1f;
+            --text-secondary: #515154;
+            --text-tertiary: #86868b;
+            --background: #ffffff;
+            --background-alt: #f5f5f7;
+            --divider: #d2d2d7;
+            --error: #ff3b30;
+            --success: #34c759;
+            --warning: #ffcc00;
+            --info: #5ac8fa;
+            --input-border: #c5c5c7;
+            --card-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            color: var(--text-primary);
+            background-color: var(--background-alt);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Modal styles */
+        #newMissionModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .mission-modal {
+            background-color: var(--background);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--card-shadow);
+            transform: translateY(-30px);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        
+        #newMissionModal.active .mission-modal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--divider);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            background-color: var(--background-alt);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-grid .form-group:last-of-type,
+        .form-grid .form-group:nth-last-of-type(2) {
+            margin-bottom: 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-group .required {
+            color: var(--error);
+            margin-left: 4px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            color: var(--text-primary);
+            background-color: var(--background);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--background);
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .search-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--divider);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .search-item:hover {
+            background-color: var(--primary-ultra-light);
+        }
+        
+        .search-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-item-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .search-item-info {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .option-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .option-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            position: relative;
+            margin-right: 10px;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .checkbox-custom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 22px;
+            width: 22px;
+            background-color: var(--background);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .option-item input[type="checkbox"]:checked ~ .checkbox-custom {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .checkbox-custom:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 8px;
+            top: 4px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .option-item input[type="checkbox"]:checked ~ .checkbox-custom:after {
+            display: block;
+        }
+        
+        .file-upload {
+            border: 2px dashed var(--divider);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: var(--background);
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-ultra-light);
+        }
+        
+        .file-upload-icon {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .file-upload-hint {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--divider);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+        
+        .btn svg {
+            margin-right: 6px;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--divider);
+            color: var(--text-secondary);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .mission-modal {
+                width: 95%;
+                max-height: 80vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="newMissionModal" class="active">
+        <div class="mission-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Nouvelle mission</h2>
+                <button class="close-modal" onclick="closeNewMissionModal()">×</button>
+            </div>
+            
+            <form id="new-mission-form">
+                <div class="modal-body">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Informations sur l'œuvre</h3>
+                        <div class="form-group">
+                            <label for="work-search">Recherche d'œuvre (API IMDb) <span class="required">*</span></label>
+                            <div class="search-container">
+                                <input type="text" id="work-search" class="form-control" placeholder="Rechercher par titre..." oninput="showSearchResults()">
+                                <div class="search-results" id="work-search-results">
+                                    <div class="search-item" onclick="selectWork(1)">
+                                        <div class="search-item-title">La Force du Destin</div>
+                                        <div class="search-item-info">Série, 2023 - Studios Atlantis</div>
+                                    </div>
+                                    <div class="search-item" onclick="selectWork(2)">
+                                        <div class="search-item-title">La Force Intérieure</div>
+                                        <div class="search-item-info">Film, 2024 - EuropaCinema</div>
+                                    </div>
+                                    <div class="search-item" onclick="selectWork(3)">
+                                        <div class="search-item-title">La Force de l'Amour</div>
+                                        <div class="search-item-info">Série, 2022 - Netflix</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="work-title">Titre de l'œuvre <span class="required">*</span></label>
+                                <input type="text" id="work-title" class="form-control" placeholder="Titre complet" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="work-type">Type d'œuvre <span class="required">*</span></label>
+                                <select id="work-type" class="form-control" required>
+                                    <option value="">Sélectionnez un type</option>
+                                    <option value="series">Série TV</option>
+                                    <option value="film">Film</option>
+                                    <option value="documentary">Documentaire</option>
+                                    <option value="animation">Animation</option>
+                                    <option value="other">Autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="episode-numbers">Numéros d'épisode</label>
+                                <input type="text" id="episode-numbers" class="form-control" placeholder="Ex: 1-3, 5, 7">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="season-number">Numéro de saison</label>
+                                <input type="number" id="season-number" class="form-control" placeholder="Ex: 2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="form-section-title">Détails de la mission</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="client-name">Société de production <span class="required">*</span></label>
+                                <input type="text" id="client-name" class="form-control" placeholder="Nom de la société" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mission-start">Date de début <span class="required">*</span></label>
+                                <input type="date" id="mission-start" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mission-end">Date de fin prévue <span class="required">*</span></label>
+                                <input type="date" id="mission-end" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mission-amount">Montant (€) <span class="required">*</span></label>
+                                <input type="number" id="mission-amount" class="form-control" placeholder="Ex: 2500" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Type de mission <span class="required">*</span></label>
+                                <div class="option-group">
+                                    <div class="option-item">
+                                        <input type="checkbox" id="mission-type-subtitling" name="mission-type[]" value="subtitling">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="mission-type-subtitling">Sous-titrage</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="mission-type-dubbing" name="mission-type[]" value="dubbing">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="mission-type-dubbing">Doublage</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="mission-type-adaptation" name="mission-type[]" value="adaptation">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="mission-type-adaptation">Adaptation</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="mission-type-voiceover" name="mission-type[]" value="voiceover">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="mission-type-voiceover">Voice-over</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="mission-type-audio-desc" name="mission-type[]" value="audiodesc">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="mission-type-audio-desc">Audio-description</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="mission-desc">Description de la mission</label>
+                                <textarea id="mission-desc" class="form-control" placeholder="Détails supplémentaires sur la mission..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="form-section-title">Documents et pièces jointes</h3>
+                        <div class="form-group">
+                            <label for="mission-files">Ajouter des fichiers</label>
+                            <label for="mission-files" class="file-upload">
+                                <div class="file-upload-icon">📎</div>
+                                <div class="file-upload-text">Cliquez ou glissez-déposez des fichiers ici</div>
+                                <div class="file-upload-hint">Formats acceptés: PDF, DOC, DOCX, JPG, PNG (max 10 Mo)</div>
+                            </label>
+                            <input type="file" id="mission-files" multiple>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="form-section-title">Paramètres avancés</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="mission-status">Statut initial</label>
+                                <select id="mission-status" class="form-control">
+                                    <option value="pending">En attente</option>
+                                    <option value="progress" selected>En cours</option>
+                                    <option value="review">En révision</option>
+                                    <option value="completed">Terminé</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="mission-priority">Priorité</label>
+                                <select id="mission-priority" class="form-control">
+                                    <option value="normal" selected>Normale</option>
+                                    <option value="high">Haute</option>
+                                    <option value="urgent">Urgente</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Options supplémentaires</label>
+                                <div class="option-group">
+                                    <div class="option-item">
+                                        <input type="checkbox" id="add-to-calendar" name="options[]" value="calendar" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <label for="add-to-calendar">Ajouter au calendrier</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="create-tasks" name="options[]" value="tasks" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <label for="create-tasks">Créer des tâches automatiquement</label>
+                                    </div>
+                                    <div class="option-item">
+                                        <input type="checkbox" id="notify-client" name="options[]" value="notify">
+                                        <span class="checkbox-custom"></span>
+                                        <label for="notify-client">Notifier la société de production</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeNewMissionModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Créer la mission
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle search results visibility
+        function showSearchResults() {
+            const searchInput = document.getElementById('work-search');
+            const searchResults = document.getElementById('work-search-results');
+            
+            if (searchInput.value.length > 2) {
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }
+        
+        // Select work from search results
+        function selectWork(id) {
+            const searchResults = document.getElementById('work-search-results');
+            const titleInput = document.getElementById('work-title');
+            
+            // Set work title based on selected item
+            if (id === 1) {
+                titleInput.value = "La Force du Destin";
+                document.getElementById('work-type').value = "series";
+                document.getElementById('client-name').value = "Studios Atlantis";
+                document.getElementById('season-number').value = "2";
+                document.getElementById('episode-numbers').value = "7-8";
+            } else if (id === 2) {
+                titleInput.value = "La Force Intérieure";
+                document.getElementById('work-type').value = "film";
+                document.getElementById('client-name').value = "EuropaCinema";
+                document.getElementById('season-number').value = "";
+                document.getElementById('episode-numbers').value = "";
+            } else if (id === 3) {
+                titleInput.value = "La Force de l'Amour";
+                document.getElementById('work-type').value = "series";
+                document.getElementById('client-name').value = "Netflix";
+                document.getElementById('season-number').value = "1";
+                document.getElementById('episode-numbers').value = "1-3";
+            }
+            
+            searchResults.style.display = 'none';
+        }
+        
+        // Close modal
+        function closeNewMissionModal() {
+            const modal = document.getElementById('newMissionModal');
+            modal.classList.remove('active');
+            // In a real application, we would use this to completely hide the modal
+            // But for this demo, we'll just animate it out
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        // Form submission
+        document.getElementById('new-mission-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ff3b30';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#c5c5c7';
+                }
+            });
+            
+            // Check if at least one mission type is selected
+            const missionTypes = document.querySelectorAll('input[name="mission-type[]"]:checked');
+            if (missionTypes.length === 0) {
+                document.querySelectorAll('.option-item')[0].style.color = '#ff3b30';
+                isValid = false;
+            } else {
+                document.querySelectorAll('.option-item')[0].style.color = '#1d1d1f';
+            }
+            
+            if (isValid) {
+                // In a real application, this would submit the form data
+                alert('Mission créée avec succès !');
+                closeNewMissionModal();
+            } else {
+                alert('Veuillez remplir tous les champs obligatoires.');
+            }
+        });
+    </script>
+</body>
+</html>
